@@ -29,7 +29,7 @@ import axios from '../../src/index'
 // axios.put('/extend/put', { msg: 'put' })
 //
 // axios.patch('/extend/patch', { msg: 'patch' })
-
+//
 // axios({
 //   url: '/extend/post',
 //   method: 'post',
@@ -66,6 +66,7 @@ function getUser<T>() {
 async function test() {
   const user = await getUser<User>()
   if (user) {
+    console.log(user)
     console.log(user.result.name)
   }
 }
