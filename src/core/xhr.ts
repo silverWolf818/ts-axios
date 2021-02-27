@@ -44,9 +44,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     }
 
     for (let [key, val] of Object.entries(headers)) {
-      if (typeof val === 'string') {
-        request.setRequestHeader(key, val)
-      }
+      request.setRequestHeader(key, val as string)
     }
 
     request.send(data)
