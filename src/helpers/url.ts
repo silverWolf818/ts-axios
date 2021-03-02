@@ -1,38 +1,49 @@
-import { isDate, isPlainObject, encode } from './utils'
+import { isDate, isPlainObject, encode, isURLSearchParams } from './utils'
 
 interface URLOrigin {
   protocol: string
   host: string
 }
 
-export function buildURL(url: string, params?: any): string {
+export function buildURL(
+  url: string,
+  params?: any,
+  paramsSerializer?: (params: any) => string
+): string {
   if (!params) {
     return url
   }
+  let serializedParams
 
-  const parts: string[] = []
+  if (paramsSerializer) {
+    serializedParams = paramsSerializer(params)
+  } else if (isURLSearchParams(params)) {
+    serializedParams = params.toString()
+  } else {
+    const parts: string[] = []
 
-  for (let [key, val] of Object.entries(params)) {
-    if (val) {
-      let values = []
-      if (Array.isArray(val)) {
-        values = val
-        key += '[]'
-      } else {
-        values = [val]
-      }
-      values.forEach(value => {
-        if (isDate(value)) {
-          value = value.toISOString()
-        } else if (isPlainObject(value)) {
-          value = JSON.stringify(value)
+    for (let [key, val] of Object.entries(params)) {
+      if (val) {
+        let values = []
+        if (Array.isArray(val)) {
+          values = val
+          key += '[]'
+        } else {
+          values = [val]
         }
-        parts.push(`${encode(key)}=${encode(value)}`)
-      })
+        values.forEach(value => {
+          if (isDate(value)) {
+            value = value.toISOString()
+          } else if (isPlainObject(value)) {
+            value = JSON.stringify(value)
+          }
+          parts.push(`${encode(key)}=${encode(value)}`)
+        })
+      }
     }
-  }
 
-  let serializedParams = parts.join('&')
+    serializedParams = parts.join('&')
+  }
 
   if (serializedParams) {
     if (url.includes('#')) {
@@ -42,6 +53,14 @@ export function buildURL(url: string, params?: any): string {
   }
 
   return url
+}
+
+export function isAbsoluteURL(url: string): boolean {
+  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
+}
+
+export function combineURL(baseURL: string, relativeURL?: string): string {
+  return relativeURL ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '') : baseURL
 }
 
 const urlParsingNode = document.createElement('a')

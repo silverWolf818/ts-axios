@@ -12,6 +12,11 @@ export function isFormData(val:any):val is FormData {
   return typeof val !== undefined && val instanceof FormData
 }
 
+export function isURLSearchParams(val:any):val is URLSearchParams {
+  return typeof val !== undefined && val instanceof URLSearchParams
+}
+
+
 export function deepMerge(...objs: any[]): any {
   const result = Object.create(null)
 

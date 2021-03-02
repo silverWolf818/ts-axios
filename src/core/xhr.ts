@@ -19,7 +19,9 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       xsrfCookieName,
       xsrfHeaderName,
       onDownloadProgress,
-      onUploadProgress
+      onUploadProgress,
+      auth,
+      validateStatus
     } = config
 
     const request = new XMLHttpRequest()
@@ -102,8 +104,17 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         }
       }
 
+      if (auth) {
+        headers['Authorization'] = `Basic ${btoa(`${auth.username} : ${auth.password}`)}`
+      }
+
       for (let [key, val] of Object.entries(headers)) {
-        request.setRequestHeader(key, val as string)
+        // 如果 data 为 null headers 的 content-type 属性没有意义
+        if (data === null && key.toLowerCase() === 'content-type') {
+          delete headers[key]
+        } else {
+          request.setRequestHeader(key, val as string)
+        }
       }
     }
 
@@ -117,10 +128,11 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     }
 
     function handleResponse(response: AxiosResponse): void {
-      if (response.status >= 200 && response.status < 300) {
+      const { status } = response
+      if (!validateStatus || validateStatus(status)) {
         resolve(response)
       } else {
-        reject(createError(`Request failed with status code ${response.status}`, config, null, request, response))
+        reject(createError(`Request failed with status code ${status}`, config, null, request, response))
       }
     }
 

@@ -14,39 +14,27 @@ import qs from 'qs'
 // })
 
 // xsrf demo
-const instance = axios.create({
-  xsrfCookieName: 'XSRF-TOKEN-D',
-  xsrfHeaderName: 'X-XSRF-TOKEN-D'
-})
-
-instance.get('/more/get').then(res => {
-  console.log('csrf demo:', res)
-})
+// const instance = axios.create({
+//   xsrfCookieName: 'XSRF-TOKEN-D',
+//   xsrfHeaderName: 'X-XSRF-TOKEN-D'
+// })
+//
+// instance.get('/more/get').then(res => {
+//   console.log('csrf demo:', res)
+// })
 //
 // // http auth demo
 // axios.post('/more/post', {
 //   a: 1
 // }, {
 //   auth: {
-//     username: 'chen',
+//     username: 'zhou',
 //     password: '123456'
 //   }
 // }).then(res => {
 //   console.log('http auth success demo', res)
 // })
-//
-// axios.post('/more/post', {
-//   a: 1
-// }, {
-//   auth: {
-//     username: 'chen111',
-//     password: '123456'
-//   }
-// }).then(res => {
-//   console.log('http auth fail demo', res)
-// }).catch(err => {
-//   console.log('http auth fail demo', err)
-// })
+
 //
 // // 自定义合法状态码 demo
 // axios.get('/more/304').then(res => {
@@ -54,8 +42,8 @@ instance.get('/more/get').then(res => {
 // }).catch(err => {
 //   console.log(err.message)
 // })
-//
-//
+
+
 // axios.get('/more/304', {
 //   validateStatus(status) {
 //     return status >= 200 && status < 400
@@ -67,21 +55,21 @@ instance.get('/more/get').then(res => {
 // })
 //
 // // 自定义 params 的解析规则 demo
-// axios.get('/more/get', {
-//   params: new URLSearchParams('a=b&c=d')
-// }).then(res => {
-//   console.log(res)
-// })
-//
-// axios.get('/more/get', {
-//   params: {
-//     a: 1,
-//     b: 2,
-//     c: ['a', 'b', 'c']
-//   }
-// }).then(res => {
-//   console.log(res)
-// })
+axios.get('/more/get', {
+  params: new URLSearchParams('a=b&c=d')
+}).then(res => {
+  console.log(res)
+})
+
+axios.get('/more/get', {
+  params: {
+    a: 1,
+    b: 2,
+    c: ['a', 'b', 'c']
+  }
+}).then(res => {
+  console.log(res)
+})
 //
 // const instance2 = axios.create({
 //   paramsSerializer(params) {
@@ -102,12 +90,12 @@ instance.get('/more/get').then(res => {
 // })
 //
 // // custom baseURL demo
-// const instance3 = axios.create({
-//   baseURL: 'https://img.mukewang.com/'
-// })
+const instance3 = axios.create({
+  baseURL: 'https://img.mukewang.com/'
+})
 //
-// instance3.get('5cc01a7b0001a33718720632.gif')
-// instance3.get('https://img.mukewang.com/szimg/5becd5ad0001b89306000338-360-202.jpg')
+instance3.get('5cc01a7b0001a33718720632.gif')
+instance3.get('https://img.mukewang.com/szimg/5becd5ad0001b89306000338-360-202.jpg')
 //
 //
 // // axios.all axios.spread axios.getUri demo

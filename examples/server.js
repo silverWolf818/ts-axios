@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const mutipart = require('connect-multiparty')
+const atob = require('atob')
 const webpack = require('webpack')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
@@ -199,7 +200,7 @@ function registerMoreRouter() {
     const [type, credentials] = auth.split(' ')
     console.log('atob on server:', atob(credentials))
     const [username, password] = atob(credentials).split(':').map(item => item.trim())
-    if (type === 'Basic' && username === 'chen' && password === '123456') {
+    if (type === 'Basic' && username === 'zhou' && password === '123456') {
       res.json(req.body)
     } else {
       res.status(401)
