@@ -1,8 +1,19 @@
-import { isDate, isPlainObject, encode, isURLSearchParams } from './utils'
+import { isDate, isPlainObject, isURLSearchParams } from './utils'
 
 interface URLOrigin {
   protocol: string
   host: string
+}
+
+function encode(val: string): string {
+  return encodeURIComponent(val)
+    .replace(/%40/g, '@')
+    .replace(/%3A/gi, ':')
+    .replace(/%24/g, '$')
+    .replace(/%2C/gi, ',')
+    .replace(/%20/g, '+')
+    .replace(/%5B/gi, '[')
+    .replace(/%5D/gi, ']')
 }
 
 export function buildURL(

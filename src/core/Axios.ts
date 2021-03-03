@@ -43,6 +43,8 @@ export default class Axios {
     }
 
     config = mergeConfig(this.defaults, config)
+    // 如果是大写的话，后面 flattenHeaders 时会出错。
+    config.method = config.method.toLowerCase()
 
     const chain: PromiseChain<any>[] = [{
       resolved: dispatchRequest,
