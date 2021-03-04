@@ -59,7 +59,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         }
 
         const response: AxiosResponse = {
-          data: (responseType && responseType !== 'text') ? request.response : request.responseText,
+          data: responseType && responseType !== 'text' ? request.response : request.responseText,
           status: request.status,
           statusText: request.statusText,
           headers: parseHeaders(request.getAllResponseHeaders()),
@@ -120,10 +120,17 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     function processCancel(): void {
       if (cancelToken) {
-        cancelToken.promise.then(reason => {
-          request.abort()
-          reject(reason)
-        })
+        cancelToken.promise
+          .then(reason => {
+            request.abort()
+            reject(reason)
+          })
+          .catch(
+            /* istanbul ignore next */
+            () => {
+              // do nothing
+            }
+          )
       }
     }
 
@@ -132,9 +139,10 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       if (!validateStatus || validateStatus(status)) {
         resolve(response)
       } else {
-        reject(createError(`Request failed with status code ${status}`, config, null, request, response))
+        reject(
+          createError(`Request failed with status code ${status}`, config, null, request, response)
+        )
       }
     }
-
   })
 }

@@ -8,14 +8,15 @@ export function isPlainObject(val: any): val is Object {
   return toString.call(val) === '[object Object]'
 }
 
-export function isFormData(val:any):val is FormData {
+export function isFormData(val: any): val is FormData {
+  // tslint:disable-next-line: strict-type-predicates
   return typeof val !== undefined && val instanceof FormData
 }
 
-export function isURLSearchParams(val:any):val is URLSearchParams {
+export function isURLSearchParams(val: any): val is URLSearchParams {
+  // tslint:disable-next-line: strict-type-predicates
   return typeof val !== undefined && val instanceof URLSearchParams
 }
-
 
 export function deepMerge(...objs: any[]): any {
   const result = Object.create(null)
